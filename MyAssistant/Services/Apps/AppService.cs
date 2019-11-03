@@ -53,10 +53,7 @@ namespace MyAssistant.Services
 
         public void OpenWithDefaultProgram(AppViewModel appViewModel)
         {
-            var sep = Path.PathSeparator;
-            string filePath = "explorer";
-            string arguments = $"{sep}{appViewModel}{sep}";
-            processService.Run(filePath, arguments);
+            throw new NotImplementedException();
         }
     }
 }

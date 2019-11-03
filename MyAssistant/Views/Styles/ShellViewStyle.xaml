@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MyAssistant.Views"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <!-- Sidebar menu item -->
+    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignListBoxItem}" x:Key="SidebarMenuItem">
+        <Setter Property="Height" Value="50" />
+        <Setter Property="Padding" Value="0" />
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Sidebar menu icon -->
+    <Style TargetType="{x:Type ContentControl}" BasedOn="{StaticResource StretchIcon}" x:Key="SidebarMenuIcon">
+        <Setter Property="Padding" Value="3" />
+    </Style>
+
+    <!-- Sidebar menu textblock -->
+    <Style TargetType="{x:Type ContentControl}" x:Key="SidebarMenuText" BasedOn="{StaticResource StretchText}">
+        <Setter Property="Padding" Value="2 8" />
+    </Style>
+    
+    <!-- Left border animation -->
+    <Style TargetType="{x:Type Border}" x:Key="LeftBorderAnimation">
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="BorderBrush" Value="Orange" />
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Duration="0:0:0.1"
+                                                Storyboard.TargetProperty="BorderThickness"
+                                                From="0 0 0 0" To="5 0 0 0" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

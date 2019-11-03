@@ -1,0 +1,101 @@
+﻿<UserControl x:Class="MyAssistant.Views.AppsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:local="clr-namespace:MyAssistant.Views"
+             mc:Ignorable="d"
+             x:Name="AppsControl"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid Margin="20 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Add button -->
+                <Border Grid.Row="0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Padding="10 5 15 5" Margin="0 15 15 15"
+                                Height="35"
+                                materialDesign:ButtonAssist.CornerRadius="15"
+                                materialDesign:ShadowAssist.ShadowDepth="Depth3"
+                                materialDesign:ShadowAssist.ShadowEdges="All"
+                                cal:Message.Attach="[Event Click] = [Action AddNewApp]">
+                            <StackPanel Orientation="Horizontal">
+                                <ContentControl Style="{StaticResource StretchIcon}"
+                                                Content="Add" Margin="0 0 5 0"/>
+                                <ContentControl Style="{StaticResource StretchText}"
+                                                Content="Add" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+                
+                <!-- ScrollViewer -->
+                <Border Grid.Row="1">
+                    <!-- All apps -->
+                    <ListView ItemsSource="{Binding MyApps}" SelectedIndex="{Binding Path=SelectedAppIndex, Mode=OneWayToSource}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <!-- Template of each app -->
+                        <ListView.ItemTemplate>
+                            <!-- Data template of each app-->
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.InputBindings>
+                                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ElementName=AppsControl, Path=DataContext.OpenAppCmd}" />
+                                    </Grid.InputBindings>
+                                    <StackPanel Orientation="Vertical" Margin="10">
+                                        <!-- Icon of app-->
+                                        <Image Width="{Binding ElementName=AppsControl, Path=DataContext.IconSize, FallbackValue=96}"
+                                               Height="Auto"
+                                               Source="{Binding Icon, Mode=OneWay}">
+                                        </Image>
+
+                                        <!-- Label of each app -->
+                                        <TextBlock Text="{Binding Name, Mode=TwoWay}" Width="96" TextAlignment="Center"
+                                                   TextWrapping="Wrap"
+                                                   cal:Message.Attach="[Event LostFocus] = [Action EditAppName]">
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                        <!-- Container -->
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Tag" Value="{Binding ElementName=AppsControl, Path=DataContext}" />
+
+                                <!-- Context menu of each app -->
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <ContextMenu Style="{StaticResource ContextMenu}"
+                                                     cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag,
+                                                     RelativeSource={RelativeSource Mode=Self}}">
+                                            <MenuItem Header="Edit" />
+                                            <MenuItem Header="Remove" cal:Message.Attach="RemoveApp" />
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        
+                        <!-- Wrapper panel style -->
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
